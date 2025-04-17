@@ -6,26 +6,30 @@ import java.net.InetSocketAddress;
 public class IpUtils {
 
     public static String getClientIp(ServerHttpRequest request) {
-        // Use the remote address of the client rather than the URI host.
+        // Check for X-Forwarded-For header first.
+        String forwardedFor = request.getHeaders().getFirst("X-Forwarded-For");
+        if (forwardedFor != null && !forwardedFor.isEmpty()) {
+            String ipFromHeader = forwardedFor.split(",")[0].trim();
+            System.out.println("Extracted client IP from X-Forwarded-For: " + ipFromHeader);
+            return normalizeLoopback(ipFromHeader);
+        }
+
+        // Fallback to remote address.
         InetSocketAddress remoteAddress = request.getRemoteAddress();
         if (remoteAddress != null) {
-            String ip = remoteAddress.getAddress().getHostAddress();
-            System.out.println("Extracted client IP: " + ip);
-            return normalizeLoopback(ip);
+            String ipFromRemote = remoteAddress.getAddress().getHostAddress();
+            System.out.println("Extracted client IP from remoteAddress: " + ipFromRemote);
+            return normalizeLoopback(ipFromRemote);
         }
+
         System.out.println("Extracted client IP: UNKNOWN");
         return "UNKNOWN";
     }
 
-    /**
-     * Normalizes various loopback forms to a standard representation.
-     */
     private static String normalizeLoopback(String ip) {
-        // Normalize IPv6 loopback addresses to the IPv4 loopback address.
         if ("::1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip)) {
             return "127.0.0.1";
         }
-        // Normalize the hostname "localhost" to "127.0.0.1".
         if ("localhost".equalsIgnoreCase(ip)) {
             return "127.0.0.1";
         }

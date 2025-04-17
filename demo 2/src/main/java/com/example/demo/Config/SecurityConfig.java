@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.ServerAuthenticationFailureHandler;
 import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
@@ -26,21 +27,36 @@ import reactor.core.publisher.Mono;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
+    /**
+     * Define the SecurityContextRepository bean explicitly to make it available for injection
+     * This is needed by AuthController
+     */
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, ServerSecurityContextRepository securityContextRepository) {
+    public ServerSecurityContextRepository securityContextRepository() {
+        return new WebSessionServerSecurityContextRepository();
+    }
+
+    @Bean
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http,
+                                                            ServerSecurityContextRepository securityContextRepository) {
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeExchange(ex -> ex
-                        // Permit both login endpoints
-                        .pathMatchers("/login", "/api/login").permitAll()
-                        // All other endpoints require authentication
+                        // Permit ALL endpoints - using "/**" wildcard which matches everything
+                        .pathMatchers("/**").permitAll()
+                        // This line won't be reached due to the catch-all above, but kept for clarity
                         .anyExchange().authenticated()
                 )
                 .formLogin(form -> form
+                        // Default login page
+                        .loginPage("/login")
+                        // Handle successful login
                         .authenticationSuccessHandler(successHandler())
+                        // Handle failed login
                         .authenticationFailureHandler(failureHandler())
                 )
+                // Use the injected securityContextRepository
                 .securityContextRepository(securityContextRepository)
                 .build();
     }
@@ -48,12 +64,6 @@ public class SecurityConfig {
     @Bean
     public ReactiveAuthenticationManager reactiveAuthenticationManager(MapReactiveUserDetailsService userDetailsService) {
         return new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
-    }
-
-    // Define the SecurityContextRepository bean
-    @Bean
-    public ServerSecurityContextRepository securityContextRepository() {
-        return new WebSessionServerSecurityContextRepository();
     }
 
     @Bean
@@ -83,26 +93,28 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Allow requests from your frontend (adjust if necessary)
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Apply configuration to all endpoints
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
     @Bean
     public MapReactiveUserDetailsService userDetailsService() {
-        // Use {noop} for plain text passwords (for demonstration only)
-        return new MapReactiveUserDetailsService(
-                User.withUsername("admin")
-                        .password("{noop}admin123")
-                        .roles("ADMIN")
-                        .build()
-        );
+        UserDetails admin = User.withUsername("admin")
+                .password("{noop}admin123")
+                .roles("ADMIN")
+                .build();
+
+        // For debugging - print the user credentials to confirm they're set correctly
+        System.out.println("Created user: " + admin.getUsername() +
+                " with password: " + admin.getPassword() +
+                " and authorities: " + admin.getAuthorities());
+
+        return new MapReactiveUserDetailsService(admin);
     }
 }

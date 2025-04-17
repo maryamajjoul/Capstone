@@ -11,6 +11,108 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
+
+@Slf4j
+@Component
+public class IpValidationGatewayFilterFactory extends AbstractGatewayFilterFactory<Void> {
+
+    private final GatewayRouteRepository gatewayRouteRepository;
+
+    @Autowired
+    public IpValidationGatewayFilterFactory(GatewayRouteRepository gatewayRouteRepository) {
+        super(Void.class);
+        this.gatewayRouteRepository = gatewayRouteRepository;
+    }
+
+    @Override
+    public GatewayFilter apply(Void unused) {
+        return (exchange, chain) -> {
+            String requestPath = exchange.getRequest().getURI().getPath();
+            log.info("IP Validation Filter: requestPath={}", requestPath);
+
+            // Load all routes from the database.
+            List<GatewayRoute> allRoutes = gatewayRouteRepository.findAll();
+            log.debug("All routes loaded from DB ({} total)", allRoutes.size());
+
+            // Use AntPathMatcher to properly compare request path with stored predicate patterns.
+            AntPathMatcher matcher = new AntPathMatcher();
+            GatewayRoute matchingRoute = null;
+            for (GatewayRoute route : allRoutes) {
+                String predicate = route.getPredicates();
+                if (matcher.match(predicate, requestPath)) {
+                    matchingRoute = route;
+                    break;
+                }
+            }
+
+            if (matchingRoute == null) {
+                log.warn("No matching route pattern found for path: {}", requestPath);
+                exchange.getResponse().setStatusCode(HttpStatus.NOT_FOUND);
+                return exchange.getResponse().setComplete();
+            }
+
+            log.info("Found matching route: routeId={}, predicates={}, raw withIpFilter value={}",
+                    matchingRoute.getRouteId(), matchingRoute.getPredicates(), matchingRoute.getWithIpFilter());
+
+            // Convert the withIpFilter flag to boolean.
+            boolean ipFilterEnabled = Boolean.parseBoolean(String.valueOf(matchingRoute.getWithIpFilter()));
+            log.info("Evaluated withIpFilter flag as: {}", ipFilterEnabled);
+
+            // Only perform IP validation if the flag is enabled.
+            if (!ipFilterEnabled) {
+                log.info("IP filtering is disabled for routeId={}. Passing request along.", matchingRoute.getRouteId());
+                return chain.filter(exchange);
+            }
+
+            // Retrieve allowed IPs.
+            List<AllowedIp> allowedIpList = matchingRoute.getAllowedIps();
+            if (allowedIpList == null || allowedIpList.isEmpty()) {
+                log.error("No allowed IPs set for routeId={}. Returning 403.", matchingRoute.getRouteId());
+                exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
+                return exchange.getResponse().setComplete();
+            }
+            log.info("Allowed IPs for routeId={}: {}", matchingRoute.getRouteId(), allowedIpList);
+
+            // Extract client IP (this method also checks for X-Forwarded-For headers).
+            ServerHttpRequest request = exchange.getRequest();
+            String clientIp = IpUtils.getClientIp(request);
+            log.info("Client IP extracted: {}", clientIp);
+
+            // Compare with the allowed IPs, using trim() to avoid whitespace mismatches.
+            boolean isAllowed = allowedIpList.stream()
+                    .anyMatch(ipEntity -> ipEntity != null && clientIp.equals(ipEntity.getIp().trim()));
+
+            if (isAllowed) {
+                log.info("IP {} is allowed for routeId={}", clientIp, matchingRoute.getRouteId());
+                return chain.filter(exchange);
+            } else {
+                log.warn("Access DENIED for IP {} on routeId={}", clientIp, matchingRoute.getRouteId());
+                exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
+                return exchange.getResponse().setComplete();
+            }
+        };
+    }
+}
+
+
+/*
+package com.example.demo.Filter;
+
+import com.example.demo.Db.IpUtils;
+import com.example.demo.Entity.AllowedIp;
+import com.example.demo.Entity.GatewayRoute;
+import com.example.demo.Repository.GatewayRouteRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
@@ -112,3 +214,4 @@ public class IpValidationGatewayFilterFactory extends AbstractGatewayFilterFacto
         };
     }
 }
+*/

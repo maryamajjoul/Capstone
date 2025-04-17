@@ -1,3 +1,4 @@
+// src/main/java/com/example/gateway_admin/Entities/GatewayRoute.java
 package com.example.gateway_admin.Entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -5,6 +6,9 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a gateway route configuration.
+ */
 @Entity
 @Table(name = "gateway_routes")
 public class GatewayRoute {
@@ -31,11 +35,12 @@ public class GatewayRoute {
     @JsonManagedReference
     private List<AllowedIps> allowedIps = new ArrayList<>();
 
-    // Getters & Setters
+    public GatewayRoute() {}
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -43,6 +48,7 @@ public class GatewayRoute {
     public String getUri() {
         return uri;
     }
+
     public void setUri(String uri) {
         this.uri = uri;
     }
@@ -50,6 +56,7 @@ public class GatewayRoute {
     public String getRouteId() {
         return routeId;
     }
+
     public void setRouteId(String routeId) {
         this.routeId = routeId;
     }
@@ -57,6 +64,7 @@ public class GatewayRoute {
     public String getPredicates() {
         return predicates;
     }
+
     public void setPredicates(String predicates) {
         this.predicates = predicates;
     }
@@ -64,6 +72,7 @@ public class GatewayRoute {
     public Boolean getWithIpFilter() {
         return withIpFilter;
     }
+
     public void setWithIpFilter(Boolean withIpFilter) {
         this.withIpFilter = withIpFilter;
     }
@@ -71,6 +80,7 @@ public class GatewayRoute {
     public Boolean getWithToken() {
         return withToken;
     }
+
     public void setWithToken(Boolean withToken) {
         this.withToken = withToken;
     }
@@ -78,6 +88,7 @@ public class GatewayRoute {
     public Boolean getWithRateLimit() {
         return withRateLimit;
     }
+
     public void setWithRateLimit(Boolean withRateLimit) {
         this.withRateLimit = withRateLimit;
     }
@@ -85,6 +96,7 @@ public class GatewayRoute {
     public RateLimit getRateLimit() {
         return rateLimit;
     }
+
     public void setRateLimit(RateLimit rateLimit) {
         this.rateLimit = rateLimit;
     }
@@ -92,6 +104,7 @@ public class GatewayRoute {
     public List<AllowedIps> getAllowedIps() {
         return allowedIps;
     }
+
     public void setAllowedIps(List<AllowedIps> allowedIps) {
         this.allowedIps = allowedIps;
     }

@@ -30,28 +30,44 @@ public class DynamicRouteConfig {
             TokenValidationGatewayFilterFactory tokenFilterFactory,
             SimpleRateLimitGatewayFilterFactory rateLimitFactory
     ) {
-        // Returns a RouteLocator that reloads the routes from the database on each call.
         return new RouteLocator() {
             @Override
             public Flux<Route> getRoutes() {
-                // Wrap the blocking call in Flux.defer and subscribe on a boundedElastic scheduler.
                 return Flux.defer(() -> {
                     List<GatewayRoute> dbRoutes = routeRepository.findAll();
                     List<Route> routes = new ArrayList<>();
                     PathRoutePredicateFactory pathFactory = new PathRoutePredicateFactory();
+
                     for (GatewayRoute dbRoute : dbRoutes) {
+                        // Ensure a valid route id is present.
+                        String routeId = dbRoute.getRouteId();
+                        if (routeId == null || routeId.trim().isEmpty()) {
+                            routeId = "route-" + dbRoute.getId();
+                        }
+
+                        // Create the predicate using the stored pattern.
                         PathRoutePredicateFactory.Config pathConfig = new PathRoutePredicateFactory.Config();
                         pathConfig.setPatterns(Collections.singletonList(dbRoute.getPredicates()));
                         Predicate<ServerWebExchange> pathPredicate = pathFactory.apply(pathConfig);
 
+                        // Obtain gateway filters.
                         GatewayFilter ipFilter = ipFilterFactory.apply((Void) null);
                         GatewayFilter tokenFilter = tokenFilterFactory.apply((Void) null);
                         GatewayFilter rateFilter = rateLimitFactory.apply((Void) null);
 
+                        // Ensure the URI is valid.
+                        String uri = dbRoute.getUri();
+                        if (uri == null || uri.trim().isEmpty() || !uri.contains("://")) {
+                            uri = "http://" + uri;
+                        }
+
+                        // Build the route and attach metadata for clarity.
                         Route.AsyncBuilder builder = Route.async()
-                                .id(dbRoute.getRouteId())
-                                .uri(dbRoute.getUri())
-                                .predicate(pathPredicate);
+                                .id(routeId)
+                                .uri(uri)
+                                .predicate(pathPredicate)
+                                .metadata("withIpFilter", dbRoute.getWithIpFilter())
+                                .metadata("withToken", dbRoute.getWithToken());
 
                         if (Boolean.TRUE.equals(dbRoute.getWithIpFilter())) {
                             builder.filter(ipFilter);
@@ -59,9 +75,12 @@ public class DynamicRouteConfig {
                         if (Boolean.TRUE.equals(dbRoute.getWithToken())) {
                             builder.filter(tokenFilter);
                         }
+                        // Attach rate limiting filter regardless.
                         builder.filter(rateFilter);
+
                         routes.add(builder.build());
                     }
+
                     return Flux.fromIterable(routes);
                 }).subscribeOn(Schedulers.boundedElastic());
             }

@@ -1,3 +1,4 @@
+// src/main/java/com/example/gateway_admin/Entities/RateLimit.java
 package com.example.gateway_admin.Entities;
 
 import jakarta.persistence.*;
