@@ -1,89 +1,101 @@
+// src/main/java/com/example/demo/Config/DynamicRouteConfig.java
 package com.example.demo.Config;
 
+import com.example.demo.Entity.AllowedIp;
 import com.example.demo.Entity.GatewayRoute;
-import com.example.demo.Filter.IpValidationGatewayFilterFactory;
-import com.example.demo.Filter.SimpleRateLimitGatewayFilterFactory;
-import com.example.demo.Filter.TokenValidationGatewayFilterFactory;
 import com.example.demo.Repository.GatewayRouteRepository;
-import org.springframework.cloud.gateway.filter.GatewayFilter;
+import com.example.demo.Filter.IpValidationGatewayFilterFactory;
+import com.example.demo.Filter.TokenValidationGatewayFilterFactory;
+import com.example.demo.Filter.SimpleRateLimitGatewayFilterFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.handler.predicate.PathRoutePredicateFactory;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteLocator;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.net.URI;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Configuration
 public class DynamicRouteConfig {
 
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
     @Bean
     public RouteLocator customRouteLocator(
-            GatewayRouteRepository routeRepository,
-            IpValidationGatewayFilterFactory ipFilterFactory,
-            TokenValidationGatewayFilterFactory tokenFilterFactory,
-            SimpleRateLimitGatewayFilterFactory rateLimitFactory
+            GatewayRouteRepository repo,
+            IpValidationGatewayFilterFactory ipFactory,
+            TokenValidationGatewayFilterFactory tokenFactory,
+            SimpleRateLimitGatewayFilterFactory rlFactory
     ) {
-        return new RouteLocator() {
-            @Override
-            public Flux<Route> getRoutes() {
-                return Flux.defer(() -> {
-                    List<GatewayRoute> dbRoutes = routeRepository.findAll();
-                    List<Route> routes = new ArrayList<>();
-                    PathRoutePredicateFactory pathFactory = new PathRoutePredicateFactory();
+        return () -> Flux.defer(() -> {
 
-                    for (GatewayRoute dbRoute : dbRoutes) {
-                        // Ensure a valid route id is present.
-                        String routeId = dbRoute.getRouteId();
-                        if (routeId == null || routeId.trim().isEmpty()) {
-                            routeId = "route-" + dbRoute.getId();
-                        }
+            /* ---------- pull & sort routes --------------- */
+            List<GatewayRoute> dbRoutes = repo.findAll();
+            // Longer predicate first  →  “/server-final2/**” before “/server-final/**”
+            dbRoutes.sort(Comparator.comparingInt((GatewayRoute r) ->
+                    r.getPredicates() == null ? 0 : r.getPredicates().length()).reversed());
 
-                        // Create the predicate using the stored pattern.
-                        PathRoutePredicateFactory.Config pathConfig = new PathRoutePredicateFactory.Config();
-                        pathConfig.setPatterns(Collections.singletonList(dbRoute.getPredicates()));
-                        Predicate<ServerWebExchange> pathPredicate = pathFactory.apply(pathConfig);
+            System.out.println("Route build order (longest path first):");
+            dbRoutes.forEach(r -> System.out.println("  • " + r.getPredicates()));
 
-                        // Obtain gateway filters.
-                        GatewayFilter ipFilter = ipFilterFactory.apply((Void) null);
-                        GatewayFilter tokenFilter = tokenFilterFactory.apply((Void) null);
-                        GatewayFilter rateFilter = rateLimitFactory.apply((Void) null);
+            PathRoutePredicateFactory pathFactory = new PathRoutePredicateFactory();
+            List<Route> routeDefs = new ArrayList<>();
 
-                        // Ensure the URI is valid.
-                        String uri = dbRoute.getUri();
-                        if (uri == null || uri.trim().isEmpty() || !uri.contains("://")) {
-                            uri = "http://" + uri;
-                        }
+            for (GatewayRoute r : dbRoutes) {
 
-                        // Build the route and attach metadata for clarity.
-                        Route.AsyncBuilder builder = Route.async()
-                                .id(routeId)
-                                .uri(uri)
-                                .predicate(pathPredicate)
-                                .metadata("withIpFilter", dbRoute.getWithIpFilter())
-                                .metadata("withToken", dbRoute.getWithToken());
+                /* ---- basic validation ---- */
+                if (r.getPredicates() == null || r.getUri() == null) continue;
 
-                        if (Boolean.TRUE.equals(dbRoute.getWithIpFilter())) {
-                            builder.filter(ipFilter);
-                        }
-                        if (Boolean.TRUE.equals(dbRoute.getWithToken())) {
-                            builder.filter(tokenFilter);
-                        }
-                        // Attach rate limiting filter regardless.
-                        builder.filter(rateFilter);
+                String routeId = (r.getRouteId() == null || r.getRouteId().isBlank())
+                        ? "route-" + r.getId() : r.getRouteId();
 
-                        routes.add(builder.build());
-                    }
+                PathRoutePredicateFactory.Config pc = new PathRoutePredicateFactory.Config();
+                pc.setPatterns(Collections.singletonList(r.getPredicates()));
+                Predicate<ServerWebExchange> pathPred = pathFactory.apply(pc);
 
-                    return Flux.fromIterable(routes);
-                }).subscribeOn(Schedulers.boundedElastic());
+                String raw = r.getUri().contains("://") ? r.getUri() : "http://" + r.getUri();
+
+                Route.AsyncBuilder b = Route.async()
+                        .id(routeId)
+                        .uri(URI.create(raw))
+                        .predicate(pathPred)
+                        .metadata("withIpFilter", r.getWithIpFilter())
+                        .metadata("withToken",    r.getWithToken())
+                        .metadata("withRateLimit",r.getWithRateLimit());
+
+                if (Boolean.TRUE.equals(r.getWithIpFilter())) {
+                    List<String> ips = r.getAllowedIps() == null ? Collections.emptyList()
+                            : r.getAllowedIps().stream().map(AllowedIp::getIp).collect(Collectors.toList());
+                    b.metadata("allowedIps", ips)
+                            .filter(ipFactory.apply((Void) null));
+                }
+                if (Boolean.TRUE.equals(r.getWithToken())) {
+                    b.filter(tokenFactory.apply((Void) null));
+                }
+                if (Boolean.TRUE.equals(r.getWithRateLimit()) && r.getRateLimit() != null) {
+                    b.metadata("maxRequests", r.getRateLimit().getMaxRequests())
+                            .metadata("timeWindowMs", r.getRateLimit().getTimeWindowMs())
+                            .filter(rlFactory.apply((Void) null));
+                }
+                routeDefs.add(b.build());
             }
-        };
+            return Flux.fromIterable(routeDefs);
+
+        }).subscribeOn(Schedulers.boundedElastic());
+    }
+
+    /** Trigger after any CRUD change to refresh gateway routes */
+    public void publishRefreshEvent() {
+        publisher.publishEvent(new RefreshRoutesEvent(this));
     }
 }
