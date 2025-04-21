@@ -1,0 +1,17 @@
+# Java build folders
+**/target/
+**/build/
+
+# IDE configs
+.idea/
+*.iml
+
+# macOS
+.DS_Store
+
+# Node if you have front‑end code
+node_modules/
+
+# Logs
+*.log
+
