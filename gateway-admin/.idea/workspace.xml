@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="95be8cc9-55a0-4941-9ff7-2a975189a215" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../demo 2/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Config/DynamicRouteConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Config/JwtDecoderConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Config/JwtUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Controller/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Controller/GatewayRouteController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Controller/MetricsController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Db/DataLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Db/GatewayRouteService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Db/IpUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Db/PublicKeyService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Entity/AllowedIp.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Entity/GatewayRoute.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Entity/RateLimit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Entity/RateLimiting.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Filter/IpValidationGatewayFilterFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Filter/RequestCountFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Filter/SimpleRateLimitGatewayFilterFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Filter/TokenValidationGatewayFilterFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/MiddlewareServerApplication/DemoApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Repository/AllowedIpRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Repository/GatewayRouteRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Repository/RateLimitRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/dto/AllowedIpDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/dto/GatewayRouteDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/dto/RateLimitDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/test/java/com/example/demo/DemoApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/Config/LoadData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/Config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/Controller/GatewayRouteController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/Controller/IpAddressController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/Controller/RateLimitController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/Entities/AllowedIps.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/Entities/GatewayRoute.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/Entities/RateLimit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/GatewayAdminApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/Repositories/AllowedIpRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/Repositories/GatewayRouteRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/Repositories/RateLimitRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/gateway_admin/Services/GatewayRouteService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/gateway_admin/GatewayAdminApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/src/main/java/com/example/server_final_2/DemoController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/src/main/java/com/example/server_final_2/ServerFinal2Application.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/src/test/java/com/example/server_final_2/ServerFinal2ApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final/src/main/java/com/example/server_final/DemoController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final/src/main/java/com/example/server_final/FinalServerApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final/src/test/java/com/example/server_final/FinalServerApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/src/main/java/com/example/token/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/src/main/java/com/example/token/JwtUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/src/main/java/com/example/token/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/src/main/java/com/example/token/TokenApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/src/main/java/com/example/token/VaultConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/src/main/java/com/example/token/VaultRSAKeyConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/src/main/resources/Keys/public_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/src/test/java/com/example/token/TestConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/src/test/java/com/example/token/TokenApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2uRUwflGQZfnOsXnOZhkTprowsr" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.GatewayAdminApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gateway-admin [clean,install,-DskipTests].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gateway-admin [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gateway-admin [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gateway-admin [dependency:tree].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gateway-admin [spring-boot:run].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.GatewayAdminApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/maryamajjoul/Desktop/InternshipPCA/Last_Version copy/gateway-admin&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.editor&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean install -DskipTests " />
+      <command value="rm -rf ~/.m2/repository/org/springframework/cloud" />
+      <command value="mvn dependency:tree " />
+      <command value="mvn clean " />
+      <command value="mvn clean install" />
+      <command value="rm -rf ~/.m2/repository/org/springframework/cloud " />
+      <command value="mvn spring-boot:run" />
+      <command value="mvn clean install " />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="GatewayAdminApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="gateway-admin" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.gateway_admin.GatewayAdminApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.117" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.117" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="95be8cc9-55a0-4941-9ff7-2a975189a215" name="Changes" comment="" />
+      <created>1742211121054</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742211121054</updated>
+      <workItem from="1742211122426" duration="10310000" />
+      <workItem from="1742290613316" duration="5527000" />
+      <workItem from="1742305684335" duration="690000" />
+      <workItem from="1742375865711" duration="7405000" />
+      <workItem from="1742393410394" duration="7876000" />
+      <workItem from="1742813993775" duration="1155000" />
+      <workItem from="1742896230705" duration="1428000" />
+      <workItem from="1742909349008" duration="7787000" />
+      <workItem from="1742992362103" duration="343000" />
+      <workItem from="1743671858016" duration="11801000" />
+      <workItem from="1744032418547" duration="20043000" />
+      <workItem from="1744883438282" duration="12861000" />
+      <workItem from="1745193880478" duration="1097000" />
+      <workItem from="1745199312315" duration="1500000" />
+      <workItem from="1745234016075" duration="1397000" />
+      <workItem from="1745245435476" duration="28000" />
+      <workItem from="1745245884976" duration="8000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

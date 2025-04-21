@@ -8,12 +8,13 @@ import RateLimitPage from './pages/RateLimitPage.jsx';
 import SystemSettingsPage from './pages/SystemSettingsPage.jsx';
 import DashboardLayout from 'src/layout/DashboardLayout.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
-import { fetchRoutes } from './services/dataService.jsx';
+// Update the import to use the correct file and extension:
+import { fetchGatewayRoutes } from './services/dataService';
 
 const App = () => {
   useEffect(() => {
-    // Attach fetchRoutes to the window object for testing in the browser console.
-    window.fetchRoutes = fetchRoutes;
+    // Attach fetchGatewayRoutes to the window object for testing in the browser console.
+    window.fetchGatewayRoutes = fetchGatewayRoutes;
   }, []);
 
   return (

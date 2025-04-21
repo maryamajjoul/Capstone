@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="33407e58-ca3c-4e04-b809-b5411d8e4654" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../demo 2/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../demo 2/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Controller/GatewayRouteController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Db/GatewayRouteService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Entity/AllowedIp.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Entity/GatewayRoute.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Entity/RateLimit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Entity/RateLimiting.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Filter/IpValidationGatewayFilterFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Filter/IpValidationGatewayFilterFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Repository/AllowedIpRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Repository/GatewayRouteRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../demo 2/src/main/java/com/example/demo/Repository/RateLimitRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gateway-admin/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gateway-admin/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gateway-admin/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gateway-admin/src/main/java/com/example/gateway_admin/Config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gateway-admin/src/main/java/com/example/gateway_admin/Entities/GatewayRoute.java" beforeDir="false" afterPath="$PROJECT_DIR$/../gateway-admin/src/main/java/com/example/gateway_admin/Entities/GatewayRoute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gateway-admin/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../gateway-admin/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server-final-2/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../token/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../token/src/main/resources/application.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2ryod3mIibna9DhGarvbhQQ4xHD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.server-final [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.server-final [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.server-final [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.server-final [spring,boot...].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.server-final [spring-boot:run].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.server-final [spring].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.FinalServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/maryamajjoul/Desktop/InternshipPCA/Last_Version copy/server-final&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean" />
+      <command value="mvn clean install" />
+      <command value="mvn install" />
+      <command value="mvn spring boot spring-boot:run" />
+      <command value="mvn spring " />
+      <command value="mvn spring-boot:run" />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="FinalServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="server-final" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.server_final.FinalServerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.117" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.117" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="33407e58-ca3c-4e04-b809-b5411d8e4654" name="Changes" comment="" />
+      <created>1737540760462</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1737540760462</updated>
+      <workItem from="1737540763222" duration="9365000" />
+      <workItem from="1737623041817" duration="747000" />
+      <workItem from="1737623856960" duration="628000" />
+      <workItem from="1737625795683" duration="554000" />
+      <workItem from="1737626584711" duration="351000" />
+      <workItem from="1737627565409" duration="365000" />
+      <workItem from="1737632640760" duration="1960000" />
+      <workItem from="1737643256909" duration="1767000" />
+      <workItem from="1737720149420" duration="5650000" />
+      <workItem from="1737968636404" duration="78000" />
+      <workItem from="1737968948332" duration="5430000" />
+      <workItem from="1737975600037" duration="2276000" />
+      <workItem from="1738050368334" duration="1621000" />
+      <workItem from="1738054453452" duration="1279000" />
+      <workItem from="1738057262456" duration="1715000" />
+      <workItem from="1738136835038" duration="3852000" />
+      <workItem from="1738165961202" duration="3991000" />
+      <workItem from="1738247235882" duration="1152000" />
+      <workItem from="1738309789765" duration="806000" />
+      <workItem from="1738331940811" duration="516000" />
+      <workItem from="1738678556887" duration="7933000" />
+      <workItem from="1738857435701" duration="6870000" />
+      <workItem from="1739178384401" duration="1961000" />
+      <workItem from="1739260940433" duration="3211000" />
+      <workItem from="1739438512731" duration="948000" />
+      <workItem from="1739439574725" duration="597000" />
+      <workItem from="1739450971781" duration="524000" />
+      <workItem from="1739520690963" duration="1035000" />
+      <workItem from="1739740691056" duration="342000" />
+      <workItem from="1739779663121" duration="70000" />
+      <workItem from="1739779871297" duration="5234000" />
+      <workItem from="1740321099091" duration="8104000" />
+      <workItem from="1740567186241" duration="2919000" />
+      <workItem from="1740579136922" duration="1578000" />
+      <workItem from="1740992675198" duration="1044000" />
+      <workItem from="1741007034004" duration="1335000" />
+      <workItem from="1741079740122" duration="1530000" />
+      <workItem from="1741181104526" duration="1964000" />
+      <workItem from="1741273428082" duration="3819000" />
+      <workItem from="1741777616155" duration="2378000" />
+      <workItem from="1742203133465" duration="2142000" />
+      <workItem from="1742375873813" duration="606000" />
+      <workItem from="1742393415731" duration="866000" />
+      <workItem from="1742814122820" duration="950000" />
+      <workItem from="1742896220229" duration="423000" />
+      <workItem from="1742909361632" duration="1687000" />
+      <workItem from="1742992352020" duration="347000" />
+      <workItem from="1743671815334" duration="537000" />
+      <workItem from="1744883458938" duration="2067000" />
+      <workItem from="1745194493048" duration="703000" />
+      <workItem from="1745242294420" duration="538000" />
+      <workItem from="1745245442474" duration="19000" />
+      <workItem from="1745246519597" duration="99000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

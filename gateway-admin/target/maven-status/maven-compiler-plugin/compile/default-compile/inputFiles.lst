@@ -1,0 +1,11 @@
+/Users/maryamajjoul/Downloads/gateway-admin/src/main/java/com/example/gateway_admin/Config/LoadData.java
+/Users/maryamajjoul/Downloads/gateway-admin/src/main/java/com/example/gateway_admin/Config/SecurityConfig.java
+/Users/maryamajjoul/Downloads/gateway-admin/src/main/java/com/example/gateway_admin/Controller/GatewayRouteController.java
+/Users/maryamajjoul/Downloads/gateway-admin/src/main/java/com/example/gateway_admin/Entities/AllowedIps.java
+/Users/maryamajjoul/Downloads/gateway-admin/src/main/java/com/example/gateway_admin/Entities/GatewayRoute.java
+/Users/maryamajjoul/Downloads/gateway-admin/src/main/java/com/example/gateway_admin/Entities/RateLimit.java
+/Users/maryamajjoul/Downloads/gateway-admin/src/main/java/com/example/gateway_admin/GatewayAdminApplication.java
+/Users/maryamajjoul/Downloads/gateway-admin/src/main/java/com/example/gateway_admin/Repositories/AllowedIpRepository.java
+/Users/maryamajjoul/Downloads/gateway-admin/src/main/java/com/example/gateway_admin/Repositories/GatewayRouteRepository.java
+/Users/maryamajjoul/Downloads/gateway-admin/src/main/java/com/example/gateway_admin/Repositories/RateLimitRepository.java
+/Users/maryamajjoul/Downloads/gateway-admin/src/main/java/com/example/gateway_admin/Services/GatewayRouteService.java

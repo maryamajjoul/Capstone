@@ -23,6 +23,8 @@
 	<properties>
 		<java.version>18</java.version>
 		<spring-cloud.version>2022.0.3</spring-cloud.version>
+		<maven.compiler.source>18</maven.compiler.source>
+		<maven.compiler.target>18</maven.compiler.target>
 	</properties>
 
 	<dependencies>

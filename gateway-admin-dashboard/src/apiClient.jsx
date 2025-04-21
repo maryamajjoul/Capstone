@@ -2,31 +2,33 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: '/api', // Assumes you have set up a proxy in Vite to forward /api to your backend
+  baseURL: '/api', // Will use Vite's proxy configuration
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
-// Request interceptor (optional: attach auth tokens here if needed)
+// Add request interceptor to include token
 apiClient.interceptors.request.use(
   (config) => {
-    // Example: Uncomment and modify if you have an auth token stored in localStorage
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Response interceptor for handling errors globally
+// Add response interceptor for token expiration
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API call error:', error);
-    // Optionally handle specific error statuses here
+    if (error.response && error.response.status === 401) {
+      // Token expired, log out user
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
     return Promise.reject(error);
   }
 );

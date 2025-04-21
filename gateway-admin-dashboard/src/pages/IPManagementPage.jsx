@@ -1,6 +1,6 @@
 // src/pages/IPManagementPage.jsx
-import React, { useState } from 'react';
-import { 
+import React, { useState, useEffect } from 'react';
+import {
   Typography,
   Box,
   Paper,
@@ -10,122 +10,195 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  IconButton,
-  Button
+  Button,
+  Pagination,
+  TextField,
+  InputAdornment,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  CircularProgress,
+  Alert
 } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { styled } from '@mui/material/styles';
+import {
+  fetchIpAddresses,
+  addIpAddress,
+  updateIpAddress,
+  deleteIpAddress
+} from '../services/ipService';
+import { fetchGatewayRoutes } from '../services/dataService';
 
-import EditIcon from '@mui/icons-material/Edit';
-import DownloadIcon from '@mui/icons-material/Download';
-import ShowChartIcon from '@mui/icons-material/ShowChart';
-import StorageIcon from '@mui/icons-material/Storage';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
+const TableContainerStyled = styled(TableContainer)(({ theme }) => ({
+  marginTop: theme.spacing(2)
+}));
+
+const ITEMS_PER_PAGE = 5;
 
 const IPManagementPage = () => {
-  // Sample IP data
-  const [ipData] = useState([
-    { id: 1, ip: '192.168.10.101' },
-    { id: 2, ip: '127.0.0.1' }
-  ]);
+  const [ips, setIps] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+
+  const [openAdd, setOpenAdd] = useState(false);
+  const [addForm, setAddForm] = useState({ ip: '', routeId: '' });
+
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [updateForm, setUpdateForm] = useState({ id: null, ip: '', gatewayRouteId: null });
+
+  //-----------------------------------
+  // Load IPs + predicates
+  //-----------------------------------
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const [ipData, routes] = await Promise.all([
+        fetchIpAddresses(),
+        fetchGatewayRoutes()
+      ]);
+      const predicateMap = new Map(routes.map(r => [r.id, r.predicates || '']));
+      const enriched = ipData.map(ip => ({ ...ip, predicate: predicateMap.get(ip.gatewayRouteId) || '' }));
+      setIps(enriched);
+    } catch (e) {
+      console.error(e);
+      setError('Unable to load IP addresses');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { load(); }, []);
+
+  //-----------------------------------
+  // Derived lists
+  //-----------------------------------
+  const filtered = ips.filter(r =>
+    `${r.id} ${r.gatewayRouteId} ${r.predicate || ''} ${r.ip}`.toLowerCase().includes(search.toLowerCase())
+  );
+  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+  const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+
+  //-----------------------------------
+  // CRUD actions
+  //-----------------------------------
+  const handleAdd = async () => {
+    if (!addForm.ip || !addForm.routeId) { alert('Both IP and Route ID are required'); return; }
+    try {
+      await addIpAddress({ ip: addForm.ip, gatewayRoute: { id: Number(addForm.routeId) } });
+      setOpenAdd(false); setAddForm({ ip: '', routeId: '' }); await load();
+    } catch (e) { console.error(e); alert('Failed to add IP'); }
+  };
+
+  const handleUpdate = async () => {
+    if (!updateForm.ip) { alert('IP cannot be empty'); return; }
+    try {
+      await updateIpAddress(updateForm.id, { ip: updateForm.ip, gatewayRoute: { id: updateForm.gatewayRouteId } });
+      setOpenUpdate(false); await load();
+    } catch (e) { console.error(e); alert('Failed to update IP'); }
+  };
+
+  const handleDelete = async (id, routeId) => {
+    if (!window.confirm('Delete this IP address?')) return;
+    try { await deleteIpAddress(id, routeId); await load(); }
+    catch (e) { console.error(e); alert('Failed to delete IP'); }
+  };
+
+  //-----------------------------------
+  // UI
+  //-----------------------------------
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h5" component="h1" sx={{ mb: 3 }}>
-        IP Filter Management
-      </Typography>
+      <Typography variant="h5">IP Management</Typography>
+      {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
 
-      {/* Top Buttons (mirroring RateLimitPage) */}
-      <Box sx={{ display: 'flex', mb: 2 }}>
-        <Button
-          variant="contained"
-          startIcon={<ListAltIcon />}
-          sx={{ mr: 1 }}
-          color="secondary"
-        >
-          List
-        
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<StorageIcon />}
-          sx={{ mr: 1 }}
-          color="secondary"
-        >
-          Database
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<DownloadIcon />}
-          sx={{ mr: 1 }}
-          color="secondary"
-        >
-          Download
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<ShowChartIcon />}
-          color="secondary"
-        >
-          Chart
+      {/* Search + Add */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2, mb: 2 }}>
+        <TextField
+          placeholder="Search"
+          size="small"
+          value={search}
+          onChange={e => { setSearch(e.target.value); setPage(1); }}
+          InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>) }}
+          sx={{ width: 280 }}
+        />
+        <Button variant="contained" onClick={() => setOpenAdd(true)} sx={{ textTransform: 'none' }}>
+          Add New IP
         </Button>
       </Box>
 
-      {/* Table (white Paper, similar to RateLimitPage) */}
-      <TableContainer component={Paper} sx={{ borderRadius: 1 }}>
+      {/* Table */}
+      <TableContainerStyled component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: 'bold' }}>
-                id
-                <Typography variant="caption" display="block">
-                  [PK] bigint
-                </Typography>
-                <IconButton size="small">
-                  <EditIcon fontSize="small" />
-                </IconButton>
-              </TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>
-                ip
-                <Typography variant="caption" display="block">
-                  character varying (255)
-                </Typography>
-                <IconButton size="small">
-                  <EditIcon fontSize="small" />
-                </IconButton>
-              </TableCell>
+              <TableCell>IP&nbsp;ID</TableCell>
+              <TableCell>Gateway&nbsp;Route&nbsp;ID</TableCell>
+              <TableCell>Predicate</TableCell>
+              <TableCell>IP&nbsp;Address</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {ipData.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>{row.id}</TableCell>
-                <TableCell>{row.ip}</TableCell>
-              </TableRow>
-            ))}
+            {loading ? (
+              <TableRow><TableCell colSpan={5} align="center"><CircularProgress size={24} /></TableCell></TableRow>
+            ) : paginated.length === 0 ? (
+              <TableRow><TableCell colSpan={5} align="center">No IP addresses</TableCell></TableRow>
+            ) : (
+              paginated.map(row => (
+                <TableRow key={row.id}>
+                  <TableCell>{row.id}</TableCell>
+                  <TableCell>{row.gatewayRouteId}</TableCell>
+                  <TableCell>{row.predicate}</TableCell>
+                  <TableCell>{row.ip}</TableCell>
+                  <TableCell align="right">
+                    <Button size="small" variant="contained" color="success" sx={{ mr: 1, textTransform: 'none' }}
+                      onClick={() => { setUpdateForm(row); setOpenUpdate(true); }}>
+                      Update
+                    </Button>
+                    <Button size="small" variant="contained" color="error" sx={{ textTransform: 'none' }}
+                      onClick={() => handleDelete(row.id, row.gatewayRouteId)}>
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
-      </TableContainer>
-      
-      {/* Bottom Buttons (mirroring RateLimitPage) */}
-      <Box sx={{ display: 'flex', mt: 2 }}>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          sx={{ mr: 1 }}
-          color="success"
-        >
-          Add New IP
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          startIcon={<DeleteIcon />}
-        >
-          Delete Selected
-        </Button>
-      </Box>
+      </TableContainerStyled>
+
+      <Pagination page={page} count={totalPages} onChange={(_, v) => setPage(v)} sx={{ mt: 2 }} />
+
+      {/* Add Modal */}
+      <Dialog open={openAdd} onClose={() => setOpenAdd(false)}>
+        <DialogTitle>Add New IP</DialogTitle>
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
+          <TextField label="IP Address" fullWidth value={addForm.ip} onChange={e => setAddForm(p => ({ ...p, ip: e.target.value }))} />
+          <TextField label="Route ID" type="number" fullWidth value={addForm.routeId} onChange={e => setAddForm(p => ({ ...p, routeId: e.target.value }))} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenAdd(false)}>Cancel</Button>
+          <Button onClick={handleAdd} variant="contained">Add</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Update Modal */}
+      <Dialog open={openUpdate} onClose={() => setOpenUpdate(false)}>
+        <DialogTitle>Update IP</DialogTitle>
+        <DialogContent sx={{ pt: 1 }}>
+          <TextField fullWidth label="IP Address" value={updateForm.ip} onChange={e => setUpdateForm(p => ({ ...p, ip: e.target.value }))} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenUpdate(false)}>Cancel</Button>
+          <Button onClick={handleUpdate} variant="contained">Update</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
