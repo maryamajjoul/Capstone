@@ -8,16 +8,15 @@ const SystemSettingsPage = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // 1. Remove tokens from localStorage
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-
-    // 2. Clear any default Authorization header that might still be set
+    // Remove the correct token key from localStorage
+    localStorage.removeItem('token');
+    
+    // Clear any default Authorization header
     if (apiClient && apiClient.defaults.headers.common.Authorization) {
       delete apiClient.defaults.headers.common.Authorization;
     }
-
-    // 3. Redirect to the login page and force a full reload to flush in‑memory state
+    
+    // Redirect to the login page and force a full reload
     navigate('/login', { replace: true });
     window.location.reload();
   };
