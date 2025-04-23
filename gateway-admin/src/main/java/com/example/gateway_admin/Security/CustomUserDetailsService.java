@@ -1,31 +1,25 @@
+// src/main/java/com/example/gateway_admin/Security/CustomUserDetailsService.java
 package com.example.gateway_admin.Security;
 
 import com.example.gateway_admin.Entities.User;
 import com.example.gateway_admin.Repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
-
-import java.util.Collections;
 
 @Service
-public class CustomUserDetailsService implements ReactiveUserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
-    public Mono<UserDetails> findByUsername(String username) {
-        return Mono.justOrEmpty(userRepository.findByUsername(username))
-                .switchIfEmpty(Mono.error(new UsernameNotFoundException("User not found with username: " + username)))
-                .map(user -> new org.springframework.security.core.userdetails.User(
-                        user.getUsername(),
-                        user.getPassword(),
-                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
-                ));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 }

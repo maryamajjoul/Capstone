@@ -11,24 +11,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class DataInitializer {
 
     @Bean
-    public CommandLineRunner initUsers(UserRepository userRepo,
-                                       PasswordEncoder passwordEncoder) {
+    public CommandLineRunner initUsers(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            if (!userRepo.existsByUsername("admin")) {
+            // Only add default users if the repository is empty
+            if (userRepository.count() == 0) {
+                // Create admin user
                 User admin = new User();
                 admin.setUsername("admin");
                 admin.setPassword(passwordEncoder.encode("admin123"));
-                admin.setRole("ADMIN");
-                userRepo.save(admin);
-                System.out.println("Created default ADMIN account");
-            }
-            if (!userRepo.existsByUsername("user")) {
+                admin.setRole("ROLE_ADMIN");
+                admin.setEnabled(true);
+                userRepository.save(admin);
+
+                // Create normal user
                 User user = new User();
                 user.setUsername("user");
                 user.setPassword(passwordEncoder.encode("user123"));
-                user.setRole("USER");
-                userRepo.save(user);
-                System.out.println("Created default USER account");
+                user.setRole("ROLE_USER");
+                user.setEnabled(true);
+                userRepository.save(user);
+
+                System.out.println("Default users created: admin/admin123 (ADMIN) and user/user123 (USER)");
             }
         };
     }

@@ -1,15 +1,15 @@
 // src/layout/DashboardLayout.jsx
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import HexagonOutlinedIcon from '@mui/icons-material/HexagonOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
-// Removed: import RouterOutlinedIcon from '@mui/icons-material/RouterOutlined';
 import ComputerOutlinedIcon from '@mui/icons-material/ComputerOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { AuthContext } from '../context/AuthContext';
 
 const Sidebar = styled(Box)(({ theme }) => ({
   width: 260,
@@ -55,11 +55,21 @@ const Content = styled(Box)({
   overflow: 'auto'
 });
 
+const UserInfo = styled(Box)(({ theme }) => ({
+  marginTop: 'auto',
+  padding: theme.spacing(2),
+  borderTop: '1px solid #f0f0f0',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(0.5)
+}));
+
 const DashboardLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, isAdmin } = useContext(AuthContext);
   
-  // Updated navigation items (Gateway Routes removed)
+  // Base navigation items (accessible by both roles)
   const navItems = [
     { 
       label: 'Dashboard', 
@@ -97,7 +107,7 @@ const DashboardLayout = () => {
               Dashboard
             </Typography>
             <Typography variant="caption" color="textSecondary">
-              
+              Gateway Admin
             </Typography>
           </Box>
         </SidebarHeader>
@@ -119,6 +129,14 @@ const DashboardLayout = () => {
             )}
           </NavItem>
         ))}
+        
+        {/* User info at bottom of sidebar */}
+        <UserInfo>
+          <Typography fontWeight="bold">{user?.username || 'User'}</Typography>
+          <Typography variant="caption" color="textSecondary">
+            Role: {isAdmin ? 'Administrator' : 'Standard User'}
+          </Typography>
+        </UserInfo>
       </Sidebar>
       
       <Content>

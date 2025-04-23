@@ -1,28 +1,45 @@
+// src/apiClient.jsx
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8081/api', // direct to your working backend
-  headers: { 'Content-Type': 'application/json' },
+  baseURL: '/api', // Will use Vite's proxy configuration
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
+// Add request interceptor to include token
 apiClient.interceptors.request.use(
-  config => {
+  (config) => {
     const token = localStorage.getItem('token');
-    if (token) config.headers.Authorization = `Bearer ${token}`;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
-  err => Promise.reject(err)
+  (error) => Promise.reject(error)
 );
 
+// Add response interceptor for token expiration and other auth errors
 apiClient.interceptors.response.use(
-  res => res,
-  err => {
-    if (err.response?.status === 401) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      // Handle 401 Unauthorized - token expired or invalid
+      if (error.response.status === 401) {
+        // Clear local storage and redirect to login
+        localStorage.removeItem('token');
+        localStorage.removeItem('userData');
+        window.location.href = '/login';
+      }
+      
+      // Handle 403 Forbidden - insufficient permissions
+      if (error.response.status === 403) {
+        console.error('Permission denied:', error.response.data);
+        // Optionally redirect to dashboard or show a notification
+      }
     }
-    return Promise.reject(err);
+    return Promise.reject(error);
   }
 );
 

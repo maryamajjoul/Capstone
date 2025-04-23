@@ -2,65 +2,63 @@ package com.example.gateway_admin.Services;
 
 import com.example.gateway_admin.Entities.User;
 import com.example.gateway_admin.Repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
+    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    public Optional<User> getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    @Transactional(readOnly = true)
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
     @Transactional
     public User createUser(User user) {
-        // Encrypt the password before saving
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        // Encrypt password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         return userRepository.save(user);
     }
 
     @Transactional
     public User updateUser(Long id, User updatedUser) {
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+        User existingUser = getUserById(id);
 
-        // Update fields
         existingUser.setUsername(updatedUser.getUsername());
 
-        // Only update password if it's provided (not empty)
+        // Only update password if provided
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
 
         existingUser.setRole(updatedUser.getRole());
+        existingUser.setEnabled(updatedUser.isEnabled());
 
         return userRepository.save(existingUser);
     }
 
     @Transactional
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        User user = getUserById(id);
+        userRepository.delete(user);
     }
 }
